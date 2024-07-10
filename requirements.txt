@@ -1,2 +1,3 @@
 jupyterlab
 jupyterlab_execute_time
+jupyterlab-vim

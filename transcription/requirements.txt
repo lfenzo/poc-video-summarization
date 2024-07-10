@@ -1,2 +1,6 @@
-pytube
+matplotlib
+openai-whisper
+pandas
 pydub
+pytube
+tabulate
