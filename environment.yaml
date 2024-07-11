@@ -1,0 +1,20 @@
+channels:
+  - defaults
+dependencies:
+  # common
+  - cuda=12.4
+  - pip
+
+  - pip:
+    - jupyterlab
+    - jupyterlab_execute_time
+    - jupyterlab-vim
+
+    # transcription
+    - matplotlib
+    - openai-whisper
+    - pandas
+    - pydub
+    - pytube
+    - tabulate
+    - openai-whisper
