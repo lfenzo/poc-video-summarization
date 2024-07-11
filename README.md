@@ -14,6 +14,8 @@ The project focuses on three distinct categories of videos:
 - **Medium-Sized Videos:** Videos with a moderate length, ranging from 10 to 25 minutes (e.g., educational content, online lectures).
 - **Long Videos:** Extensive recordings, typically lasting between 1 and 2 hours (e.g., university lectures, conference presentations).
 
+For more details, check the [Transcription README](./transcription/README.md).
+
 ### Technology Stack
 
 - Audio Extraction: [`pytube`](https://github.com/pytube/pytube) and [`pydub`](https://github.com/jiaaro/pydub).
