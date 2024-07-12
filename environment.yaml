@@ -9,6 +9,10 @@ dependencies:
     - jupyterlab
     - jupyterlab_execute_time
     - jupyterlab-vim
+    - ipywidgets
+
+    # summarization
+    - huggginface_hub
 
     # transcription
     - matplotlib

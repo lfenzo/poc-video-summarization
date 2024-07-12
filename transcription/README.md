@@ -91,5 +91,5 @@ Some observations about the results in the graph above:
 - CPU execution should be avoided whenever possible.
 - Models `tiny`, `base` and `small` make some errors that can compromise the meaning of the context, but the real impact of this can only be quantified with a summarization model.
 - As models grow in size, there is an increase in the ability to "suppress errors" on the part of the speaker. In other words, the model starts to perform a transcription that is increasingly free of errors of speech defects - e.g. "this subject, is.... it is.... considered very much" gets transcribed as "this subject, is considered very much...".
-- Tests show that a lot of storage is not needed to perform the transcriptions. As a rule of thumb, we can associate 1 hour of audio (.mp3) with ~100MB of disk storage.
+- Tests show that a lot of storage is not needed to perform the transcriptions. As a rule of thumb, we can associate 1 hour of audio (.mp3) with ~60MB of disk storage.
 - Inference times of the models should not be disregarded.
