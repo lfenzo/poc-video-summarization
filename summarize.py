@@ -1,7 +1,9 @@
+import gc
 import os
 import logging
 from argparse import ArgumentParser
 
+import torch
 import whisper
 from llama_cpp import Llama
 from pytube import YouTube
@@ -40,6 +42,8 @@ def transcribe_audio(audio_file: str | os.PathLike, model_size: str = "large") -
     model = whisper.load_model(model_size)
     result = model.transcribe(audio_file)
     del model
+    gc.collect()
+    torch.cuda.empty_cache()
     return result['text']
 
 
@@ -64,7 +68,7 @@ def summarize_text(text: str, n_gpu_layers: int, n_ctx: int) -> str:
         ],
     )
     del model
-    return response['choices'][0]['text']
+    return response['choices'][0]['message']['content']
 
 
 def define_cli_args():
