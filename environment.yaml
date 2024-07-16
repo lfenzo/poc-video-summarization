@@ -19,6 +19,6 @@ dependencies:
     - openai-whisper
     - pandas
     - pydub
-    - pytube
+    - pytubefix
     - tabulate
     - openai-whisper
