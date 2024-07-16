@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 import torch
 import whisper
 from llama_cpp import Llama
-from pytube import YouTube
+from pytubefix import YouTube
 from pydub import AudioSegment
 
 N_CTX = 8_192
@@ -18,6 +18,18 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     filename='summarizer.log',
 )
+
+
+def free_gpu_memory_after_call(func):
+    def wrapper(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+        finally:
+            gc.collect()
+            del args, kwargs
+            torch.cuda.empty_cache()
+        return result
+    return wrapper
 
 
 def write_text_file(content: str, filepath: str | os.PathLike) -> None:
@@ -38,15 +50,14 @@ def get_audio_from_youtube_video(url: str, output_filename: str, fmt: str = 'mp3
     return output_file
 
 
+@free_gpu_memory_after_call
 def transcribe_audio(audio_file: str | os.PathLike, model_size: str = "large") -> str:
     model = whisper.load_model(model_size)
     result = model.transcribe(audio_file)
-    del model
-    gc.collect()
-    torch.cuda.empty_cache()
     return result['text']
 
 
+@free_gpu_memory_after_call
 def summarize_text(text: str, n_gpu_layers: int, n_ctx: int) -> str:
     model = Llama.from_pretrained(
         repo_id="bartowski/gemma-2-27b-it-GGUF",
@@ -67,7 +78,6 @@ def summarize_text(text: str, n_gpu_layers: int, n_ctx: int) -> str:
             }
         ],
     )
-    del model
     return response['choices'][0]['message']['content']
 
 
@@ -108,10 +118,10 @@ if __name__ == "__main__":
     logging.info(f"Doenloading audio from youtube video url={args['url']}")
     audio_file = get_audio_from_youtube_video(url=args['url'], output_filename='tmp_audio', fmt='mp3')
 
-    logging.info("Transcribing audio...")
+    logging.info(f"Transcribing audio in file {audio_file}...")
     transcription = transcribe_audio(audio_file, model_size=args['model_size'])
 
-    logging.info('Summarizing transcription...')
+    logging.info(f'Summarizing transcription with {args['n_gpu_layers']} GPU layers...')
     summary = summarize_text(transcription, n_gpu_layers=args['n_gpu_layers'], n_ctx=args['n_ctx'])
 
     logging.info(f"Saving summary to text file {args['output']}")

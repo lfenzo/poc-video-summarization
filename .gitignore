@@ -5,3 +5,5 @@ audios/
 transcriptions/
 
 *.log
+*.mp3
+*.txt
